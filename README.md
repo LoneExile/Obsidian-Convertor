@@ -1,4 +1,4 @@
-# Obsidian Markdown Converter (oc)
+# Obsidian Markdown Converter
 
 A command-line tool that converts Obsidian markdown files to regular markdown
 files.
@@ -20,47 +20,46 @@ an issue or submit a pull request.
 
 ## Installation
 
-<!-- You can install Obsidian-Convertor in two ways: -->
+You can install Obsidian-Convertor in two ways:
 
-<!-- ### 1. Cloning the repository -->
-
-Cloning the repository
+### 1. Cloning the repository
 
 ```bash
 git clone https://github.com/LoneExile/Obsidian-Convertor.git
 cd Obsidian-Convertor
 ```
 
-The binary is already built in the repository, so you can run it with `./oc`
+The binary is already built in the repository, so you can run it with
+`./obsidian-convertor`
 
 or you can build it yourself
 
 ```bash
-go build -o oc main.go
+go build obsidian-convertor.go
 ```
 
-<!-- ### 2. Via Go -->
+### 2. Via Go
 
-<!-- First, make sure you have Go installed on your machine. If not, you can download -->
-<!-- it from the [official Go website](https://golang.org/dl/). -->
+First, make sure you have Go installed on your machine. If not, you can download
+it from the [official Go website](https://golang.org/dl/).
 
-<!-- Once Go is installed, run the following command: -->
+Once Go is installed, run the following command:
 
-<!-- ``` -->
-<!-- go get github.com/LoneExile/Obsidian-Convertor -->
-<!-- ``` -->
+```
+go install github.com/LoneExile/obsidian-convertor@v0.1.1
+```
 
-<!-- This will download the repository and install the `oc` command in your -->
-<!-- `$GOPATH/bin` directory. Ensure that `$GOPATH/bin` is added to your `$PATH` for -->
-<!-- the `oc` command to be globally accessible. -->
+This will download the repository and install the `obsidian-convertor` command
+in your `$GOPATH/bin` directory. Ensure that `$GOPATH/bin` is added to your
+`$PATH` for the `obsidian-convertor` command to be globally accessible.
 
 ## Usage
 
 The Obsidian Markdown Converter is used with the following command:
 
 ```bash
-# with the repository cloned method run: ./oc
-oc <input-path> <image-path> <output-path> <output-image-path> --custom-image-path <custom-image-path>
+# with the repository cloned method run: ./obsidian-convertor
+obsidian-convertor <input-path> <image-path> <output-path> <output-image-path> --custom-image-path <custom-image-path>
 ```
 
 Where:
@@ -84,13 +83,13 @@ repository:
 
 ```bash
 
-# with the repository cloned method run: ./oc
+# with the repository cloned method run: ./obsidian-convertor
 
 # run without <custom-image-path>
-oc example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/
+obsidian-convertor example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/
 
 # run with <custom-image-path>
-oc example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/ image/blog/
+obsidian-convertor example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/ image/blog/
 
 ```
 
