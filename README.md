@@ -20,9 +20,11 @@ an issue or submit a pull request.
 
 ## Installation
 
-You can install Obsidian-Convertor in two ways:
+<!-- You can install Obsidian-Convertor in two ways: -->
 
-### 1. Cloning the repository
+<!-- ### 1. Cloning the repository -->
+
+Cloning the repository
 
 ```bash
 git clone https://github.com/LoneExile/Obsidian-Convertor.git
@@ -31,20 +33,26 @@ cd Obsidian-Convertor
 
 The binary is already built in the repository, so you can run it with `./oc`
 
-### 2. Via Go
+or you can build it yourself
 
-First, make sure you have Go installed on your machine. If not, you can download
-it from the [official Go website](https://golang.org/dl/).
-
-Once Go is installed, run the following command:
-
-```
-go get github.com/LoneExile/Obsidian-Convertor
+```bash
+go build -o oc main.go
 ```
 
-This will download the repository and install the `oc` command in your
-`$GOPATH/bin` directory. Ensure that `$GOPATH/bin` is added to your `$PATH` for
-the `oc` command to be globally accessible.
+<!-- ### 2. Via Go -->
+
+<!-- First, make sure you have Go installed on your machine. If not, you can download -->
+<!-- it from the [official Go website](https://golang.org/dl/). -->
+
+<!-- Once Go is installed, run the following command: -->
+
+<!-- ``` -->
+<!-- go get github.com/LoneExile/Obsidian-Convertor -->
+<!-- ``` -->
+
+<!-- This will download the repository and install the `oc` command in your -->
+<!-- `$GOPATH/bin` directory. Ensure that `$GOPATH/bin` is added to your `$PATH` for -->
+<!-- the `oc` command to be globally accessible. -->
 
 ## Usage
 
