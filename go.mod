@@ -1,4 +1,4 @@
-module github.com/LoneExile/Obsidian-Convertor
+module github.com/LoneExile/obsidian-convertor
 
 go 1.20
 
