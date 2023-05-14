@@ -1,3 +1,5 @@
+//go:generate go build -o oc
+
 package main
 
 import (
