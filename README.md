@@ -59,7 +59,7 @@ The Obsidian Markdown Converter is used with the following command:
 
 ```bash
 # with the repository cloned method run: ./obsidian-convertor
-obsidian-convertor <input-path> <image-path> <output-path> <output-image-path> --custom-image-path <custom-image-path>
+obsidian-convertor convert <input-path> <image-path> <output-path> <output-image-path> --custom-image-path <custom-image-path>
 ```
 
 Where:
@@ -86,10 +86,10 @@ repository:
 # with the repository cloned method run: ./obsidian-convertor
 
 # run without <custom-image-path>
-obsidian-convertor example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/
+obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/
 
 # run with <custom-image-path>
-obsidian-convertor example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/
+obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/
 
 ```
 
