@@ -16,13 +16,16 @@ var rootCmd = &cobra.Command{
 	Use:   "obsidian-convertor",
 	Short: "A converter for Obsidian markdown files",
 	Long:  `A command-line tool that converts Obsidian markdown files to regular markdown files`,
+}
+
+var convertCmd = &cobra.Command{
+	Use:   "convert <input-path> <image-path> <output-path> <output-image-path> [<custom-image-path>]",
+	Short: "Converts Obsidian markdown files to regular markdown files",
+	Long:  `This command converts Obsidian markdown files to regular markdown files.`,
+	Args:  cobra.RangeArgs(4, 5), // This line enforces that the command receives between 4 and 5 arguments
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("\n Obsidian Convertor")
 		fmt.Println("-------------------")
-		if len(args) < 4 || len(args) > 5 {
-			fmt.Println("Usage: obsidian-convertor <input-path> <image-path> <output-path> <output-image-path> <custom-image-path>")
-			os.Exit(1)
-		}
 
 		inputPath := args[0]
 		imagePath := args[1]
@@ -53,7 +56,7 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number of Obsidian Convertor",
 	Long:  `All software has versions. This is Obsidian Convertor's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("\nObsidian Convertor v0.1.2") // Change the version number as needed
+		fmt.Println("\nObsidian Convertor v0.1.3") // Change the version number as needed
 	},
 }
 
@@ -165,6 +168,7 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 }
 
 func main() {
+	rootCmd.AddCommand(convertCmd)
 	rootCmd.AddCommand(versionCmd)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
