@@ -86,10 +86,10 @@ repository:
 # with the repository cloned method run: ./obsidian-convertor
 
 # run without <custom-image-path>
-obsidian-convertor example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/
+obsidian-convertor example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/
 
 # run with <custom-image-path>
-obsidian-convertor example/SecondBranin/Blog example/SecondBranin/Assets/image example/output/blogs/ example/output/images/ image/blog/
+obsidian-convertor example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/
 
 ```
 
