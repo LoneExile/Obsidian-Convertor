@@ -1,5 +1,3 @@
-//go:generate go build -o oc
-
 package main
 
 import (
@@ -15,14 +13,14 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "oc",
+	Use:   "obsidian-convertor",
 	Short: "A converter for Obsidian markdown files",
 	Long:  `A command-line tool that converts Obsidian markdown files to regular markdown files`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("\n Obsidian Convertor")
 		fmt.Println("-------------------")
 		if len(args) < 4 || len(args) > 5 {
-			fmt.Println("Usage: oc <input-path> <image-path> <output-path> <output-image-path> <custom-image-path>")
+			fmt.Println("Usage: obsidian-convertor <input-path> <image-path> <output-path> <output-image-path> <custom-image-path>")
 			os.Exit(1)
 		}
 
@@ -47,6 +45,15 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		fmt.Println("-------------------")
+	},
+}
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Print the version number of Obsidian Convertor",
+	Long:  `All software has versions. This is Obsidian Convertor's`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("\nObsidian Convertor v0.1.2") // Change the version number as needed
 	},
 }
 
@@ -158,6 +165,7 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 }
 
 func main() {
+	rootCmd.AddCommand(versionCmd)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
