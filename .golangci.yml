@@ -2,6 +2,7 @@ run:
   skip-dirs:
     - plugin/example
     - plugin/testing
+    - example
 
 linters:
   enable:
