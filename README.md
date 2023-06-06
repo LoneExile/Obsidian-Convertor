@@ -50,7 +50,7 @@ it from the [official Go website](https://golang.org/dl/).
 Once Go is installed, run the following command:
 
 ```
-go install github.com/LoneExile/obsidian-convertor@v0.1.4
+go install github.com/LoneExile/obsidian-convertor@v0.1.5
 ```
 
 This will download the repository and install the `obsidian-convertor` command
