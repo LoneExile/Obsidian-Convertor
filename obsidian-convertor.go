@@ -171,6 +171,10 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 						buf, _, err = srcImage.ExportAvif(&vips.AvifExportParams{
 							Quality: quality,
 						})
+					case "webp":
+						buf, _, err = srcImage.ExportWebp(&vips.WebpExportParams{
+							Quality: quality,
+						})
 					default:
 						return fmt.Errorf("unsupported format: %s", outputFormat)
 					}
@@ -196,9 +200,15 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 					return err
 				}
 
+				var newImageNameWithNewExt string
 				ext := filepath.Ext(newImageName)
 				newImageNameWithoutExt := strings.TrimSuffix(newImageName, ext)
-				newImageNameWithNewExt := newImageNameWithoutExt + "." + outputFormat
+
+				if outputFormat == "same" {
+					newImageNameWithNewExt = newImageName
+				} else {
+					newImageNameWithNewExt = newImageNameWithoutExt + "." + outputFormat
+				}
 
 				outputImagePathMD := ""
 				if customImagePath != "" {
