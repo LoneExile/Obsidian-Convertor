@@ -22,6 +22,8 @@ an issue or submit a pull request.
 
 ## Installation
 
+> Dependencies: <https://github.com/davidbyttow/govips#dependencies>
+
 You can install Obsidian-Convertor in two ways:
 
 ### 1. Cloning the repository
