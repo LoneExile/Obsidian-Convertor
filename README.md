@@ -11,7 +11,9 @@ my [Obsidian](https://obsidian.md/) markdown files with my
 separate image directories, and this tool makes that happen.
 
 For example, the tool converts Obsidian's `![[image.png]]` syntax into the
-regular markdown image link format `![image](path/to/image.png)`.
+regular markdown image link format `![image](path/to/image.png)`. It also has
+the ability to convert images to different formats (jpg, png, avif) and optimize
+them by specifying the quality.
 
 Right now, it's mainly all about converting image lines. But hey, I'm always
 looking for ways to make this tool better. If you have an idea for a new feature
@@ -46,7 +48,7 @@ it from the [official Go website](https://golang.org/dl/).
 Once Go is installed, run the following command:
 
 ```
-go install github.com/LoneExile/obsidian-convertor@v0.1.3
+go install github.com/LoneExile/obsidian-convertor@v0.1.4
 ```
 
 This will download the repository and install the `obsidian-convertor` command
@@ -59,7 +61,7 @@ The Obsidian Markdown Converter is used with the following command:
 
 ```bash
 # with the repository cloned method run: ./obsidian-convertor
-obsidian-convertor convert <input-path> <image-path> <output-path> <output-image-path> --custom-image-path <custom-image-path>
+obsidian-convertor convert <input-path> <image-path> <output-path> <output-image-path> [<custom-image-path>] [--format <format>] [--quality <quality>]
 ```
 
 Where:
@@ -75,6 +77,11 @@ Where:
 - `<custom-image-path>` (optional) is a custom path for images in the converted
   markdown files. If not provided, the path to the images in the converted
   markdown files will be the same as `<output-image-path>`.
+- `<format>` (optional) is the output format for the images (options: jpg, png,
+  avif, same). Default is 'same', which means the images will keep their
+  original format.
+- `<quality>` (optional) is the quality for output images (1-100). Default
+  is 100.
 
 ## Example
 
@@ -82,14 +89,13 @@ Here's an example of how to use the tool with the example directories in the
 repository:
 
 ```bash
-
 # with the repository cloned method run: ./obsidian-convertor
 
 # run without <custom-image-path>
-obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/
+obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ --format jpg --quality 85
 
 # run with <custom-image-path>
-obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/
+obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/ --format png --quality 90
 
 ```
 

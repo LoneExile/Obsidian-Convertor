@@ -4,11 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
+	"github.com/davidbyttow/govips/v2/vips"
 	"github.com/spf13/cobra"
 )
 
@@ -51,16 +53,30 @@ var convertCmd = &cobra.Command{
 	},
 }
 
+var outputFormat string
+var quality int
+
+func init() {
+	convertCmd.Flags().StringVarP(&outputFormat, "format", "f", "same", "Output image format (options: jpg, png, avif, same)")
+	convertCmd.Flags().IntVarP(&quality, "quality", "q", 100, "Quality for output image (1-100)")
+	rootCmd.AddCommand(convertCmd)
+}
+
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version number of Obsidian Convertor",
 	Long:  `All software has versions. This is Obsidian Convertor's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("\nObsidian Convertor v0.1.3") // Change the version number as needed
+		fmt.Println("\nObsidian Convertor v0.1.4") // Change the version number as needed
 	},
 }
 
 func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg, customImagePath string) error {
+
+	// Begin govips conversion
+	vips.Startup(nil)
+	defer vips.Shutdown()
+
 	err := filepath.Walk(inputPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -116,25 +132,66 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 				newImageName := fmt.Sprintf("%s%s", number, imageName)
 				newImagePath := filepath.Join(outputPathImg, newImageName)
 
-				srcImage, err := os.Open(imagePathWithExt)
-				if err != nil {
-					return err
-				}
-				defer srcImage.Close()
-
 				err = os.MkdirAll(filepath.Dir(newImagePath), os.ModePerm)
 				if err != nil {
 					return err
 				}
 
-				dstImage, err := os.Create(newImagePath)
-				if err != nil {
-					return err
-				}
-				defer dstImage.Close()
+				if outputFormat == "same" {
+					dstImage, err := os.Create(newImagePath)
+					if err != nil {
+						return err
+					}
+					defer dstImage.Close()
 
-				if _, err := io.Copy(dstImage, srcImage); err != nil {
-					return err
+					srcImage, err := os.Open(imagePathWithExt)
+					if err != nil {
+						return err
+					}
+					defer srcImage.Close()
+
+					if _, err := io.Copy(dstImage, srcImage); err != nil {
+						return err
+					}
+
+				} else {
+					srcImage, err := vips.NewImageFromFile(imagePathWithExt)
+					if err != nil {
+						return err
+					}
+
+					var buf []byte
+					switch outputFormat {
+					case "jpg":
+						buf, _, err = srcImage.ExportJpeg(&vips.JpegExportParams{
+							Quality: quality,
+						})
+					case "png":
+						buf, _, err = srcImage.ExportPng(&vips.PngExportParams{
+							Quality: quality,
+						})
+					case "avif":
+						buf, _, err = srcImage.ExportAvif(&vips.AvifExportParams{
+							Quality: quality,
+						})
+					default:
+						return fmt.Errorf("unsupported format: %s", outputFormat)
+					}
+
+					if err != nil {
+						return err
+					}
+
+					// Remove the old extension from the image path
+					baseName := filepath.Base(newImagePath)
+					ext := filepath.Ext(newImagePath)
+					baseNameWithoutExt := strings.TrimSuffix(baseName, ext)
+					newImagePathWithoutExt := filepath.Join(filepath.Dir(newImagePath), baseNameWithoutExt)
+
+					err = ioutil.WriteFile(newImagePathWithoutExt+"."+outputFormat, buf, os.ModePerm)
+					if err != nil {
+						return err
+					}
 				}
 
 				relImagePath, err := filepath.Rel(filepath.Dir(newOutputPath), outputPathImg)
@@ -142,14 +199,18 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 					return err
 				}
 
+				ext := filepath.Ext(newImageName)
+				newImageNameWithoutExt := strings.TrimSuffix(newImageName, ext)
+				newImageNameWithNewExt := newImageNameWithoutExt + "." + outputFormat
+
 				outputImagePathMD := ""
 				if customImagePath != "" {
-					outputImagePathMD = filepath.Join(customImagePath, newImageName)
+					outputImagePathMD = filepath.Join(customImagePath, newImageNameWithNewExt)
 				} else {
-					outputImagePathMD = filepath.Join(relImagePath, newImageName)
+					outputImagePathMD = filepath.Join(relImagePath, newImageNameWithNewExt)
 				}
 
-				line = strings.Replace(line, match[0], fmt.Sprintf("![%s](%s)", imageName, outputImagePathMD), 1)
+				line = strings.Replace(line, match[0], fmt.Sprintf("![%s](%s)", newImageNameWithoutExt, outputImagePathMD), 1)
 			}
 
 			if _, err := writer.WriteString(line + "\n"); err != nil {
