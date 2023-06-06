@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -72,7 +71,6 @@ var versionCmd = &cobra.Command{
 }
 
 func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg, customImagePath string) error {
-
 	// Begin govips conversion
 	vips.Startup(nil)
 	defer vips.Shutdown()
@@ -153,7 +151,6 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 					if _, err := io.Copy(dstImage, srcImage); err != nil {
 						return err
 					}
-
 				} else {
 					srcImage, err := vips.NewImageFromFile(imagePathWithExt)
 					if err != nil {
@@ -188,7 +185,7 @@ func convertObsidianToMarkdown(inputPath, imagePath, outputPathMD, outputPathImg
 					baseNameWithoutExt := strings.TrimSuffix(baseName, ext)
 					newImagePathWithoutExt := filepath.Join(filepath.Dir(newImagePath), baseNameWithoutExt)
 
-					err = ioutil.WriteFile(newImagePathWithoutExt+"."+outputFormat, buf, os.ModePerm)
+					err = os.WriteFile(newImagePathWithoutExt+"."+outputFormat, buf, os.ModePerm)
 					if err != nil {
 						return err
 					}
