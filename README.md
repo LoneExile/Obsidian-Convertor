@@ -20,6 +20,16 @@ looking for ways to make this tool better. If you have an idea for a new feature
 or if you're interested in contributing to the project, I encourage you to open
 an issue or submit a pull request.
 
+<details>
+  <summary><b>🖼️&nbsp;&nbsp;Example image</b></summary>
+
+![2023-06-21_16-41](https://github.com/LoneExile/obsidian-convertor/assets/82561297/2c796f6d-a850-45b3-8d22-736c6aa48f98)
+
+![2023-06-21_16-35](https://github.com/LoneExile/obsidian-convertor/assets/82561297/be99c56b-6c3c-4c7a-bfd3-19199e974f9e)
+
+</details>
+
+
 ## Installation
 
 > ❗Dependencies: <https://github.com/davidbyttow/govips#dependencies>
