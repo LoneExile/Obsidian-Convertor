@@ -29,7 +29,6 @@ an issue or submit a pull request.
 
 </details>
 
-
 ## Installation
 
 > ❗Dependencies: <https://github.com/davidbyttow/govips#dependencies>
@@ -73,7 +72,14 @@ The Obsidian Markdown Converter is used with the following command:
 
 ```bash
 # with the repository cloned method run: ./obsidian-convertor
-obsidian-convertor convert <input-path> <image-path> <output-path> <output-image-path> [<custom-image-path>] [--format <format>] [--quality <quality>]
+obsidian-convertor convert <input-path> \
+<image-path> \
+<output-path> \
+<output-image-path> \
+[<custom-image-path>] \
+[--format <format>] \
+[--quality <quality>]
+
 ```
 
 Where:
@@ -104,10 +110,21 @@ repository:
 # with the repository cloned method run: ./obsidian-convertor
 
 # run without <custom-image-path>
-obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ --format jpg --quality 85
+obsidian-convertor convert example/SecondBrain/Blog \
+example/SecondBrain/Assets/image \
+example/output/blogs/ \
+example/output/images/ \
+--format jpg \
+--quality 85
 
 # run with <custom-image-path>
-obsidian-convertor convert example/SecondBrain/Blog example/SecondBrain/Assets/image example/output/blogs/ example/output/images/ image/blog/ --format png --quality 90
+obsidian-convertor convert example/SecondBrain/Blog \
+example/SecondBrain/Assets/image \
+example/output/blogs/ \
+example/output/images/ \
+image/blog/ \ # <custom-image-path>
+--format png \
+--quality 90
 
 ```
 
