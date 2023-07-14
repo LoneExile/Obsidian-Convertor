@@ -134,3 +134,10 @@ the `example/output/blogs/` directory and the copied images in the
 files will be relative to the location of the markdown file itself. If you used
 the `<custom-image-path>` option, the paths to the images(in the markdown file)
 will instead use this custom path.
+
+## TODO
+
+- [ ] Convert back to Obsidian format
+- [ ] Add tests
+- [ ] integrate with [Viper](https://github.com/spf13/viper) for config file?
+- [ ] integrate with [Charm](https://github.com/charmbracelet)?
