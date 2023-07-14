@@ -50,7 +50,6 @@ func CopyImage(srcPath, dstPath string) error {
 	return nil
 }
 
-// ConvertImage converts an image from srcPath to dstPath with the specified format and quality.
 func ConvertImage(srcPath, dstPath string, format ImageFormat, quality ImageQuality) error {
 	srcImage, err := vips.NewImageFromFile(srcPath)
 	if err != nil {
