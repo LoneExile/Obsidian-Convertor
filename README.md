@@ -48,7 +48,7 @@ The binary is already built in the repository, so you can run it with
 or you can build it yourself
 
 ```bash
-go build obsidian-convertor.go
+go build -o obsidian-convertor main.go
 ```
 
 ### 2. Via Go
@@ -59,7 +59,7 @@ it from the [official Go website](https://golang.org/dl/).
 Once Go is installed, run the following command:
 
 ```
-go install github.com/LoneExile/obsidian-convertor@v0.1.5
+go install github.com/LoneExile/obsidian-convertor@v0.1.6
 ```
 
 This will download the repository and install the `obsidian-convertor` command

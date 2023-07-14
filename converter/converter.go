@@ -40,15 +40,9 @@ func (c *Converter) ConvertObsidianToMarkdown() error {
 	vips.Startup(nil)
 	defer vips.Shutdown()
 
-	inputPath := c.Config.InputPath
-	imagePath := c.Config.ImagePath
-	outputPathMD := c.Config.OutputPathMD
-	outputPathImg := c.Config.OutputPathImg
-	customImagePath := c.Config.CustomImagePath
-	outputFormat := c.Config.OutputFormat
-	quality := c.Config.Quality
+	cc := c.Config
 
-	err := filepath.Walk(inputPath, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(cc.InputPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -67,8 +61,8 @@ func (c *Converter) ConvertObsidianToMarkdown() error {
 		}
 		defer inputFile.Close()
 
-		relPath, _ := filepath.Rel(inputPath, path)
-		newOutputPath := filepath.Join(outputPathMD, relPath)
+		relPath, _ := filepath.Rel(cc.InputPath, path)
+		newOutputPath := filepath.Join(cc.OutputPathMD, relPath)
 
 		newOutputDir := filepath.Dir(newOutputPath)
 		if err := os.MkdirAll(newOutputDir, os.ModePerm); err != nil {
@@ -84,41 +78,41 @@ func (c *Converter) ConvertObsidianToMarkdown() error {
 		scanner := bufio.NewScanner(inputFile)
 		writer := bufio.NewWriter(outputFile)
 
+		// TODO: scanner.Scan() each line is slow?, maybe read until EOF? or found match regex?
 		for scanner.Scan() {
 			line := scanner.Text()
 			matches := re.FindAllStringSubmatch(line, -1)
 
 			for _, match := range matches {
 				imageName := match[1]
-				imagePathWithExt := filepath.Join(imagePath, imageName)
+				imagePathWithExt := filepath.Join(cc.ImagePath, imageName)
 				if _, err := os.Stat(imagePathWithExt); os.IsNotExist(err) {
 					return fmt.Errorf("image not found: %s", imagePathWithExt)
 				}
 
-				number := regexp.MustCompile(`\d+`).FindString(imageName)
-				newImageName := fmt.Sprintf("%s%s", number, imageName)
-				newImagePath := filepath.Join(outputPathImg, newImageName)
+				newImageName := strings.ReplaceAll(imageName, " ", "_")
+				newImagePath := filepath.Join(cc.OutputPathImg, newImageName)
 
 				err = os.MkdirAll(filepath.Dir(newImagePath), os.ModePerm)
 				if err != nil {
 					return err
 				}
 
-				if outputFormat == "same" {
+				if cc.OutputFormat == "same" {
 					err = utils.CopyImage(imagePathWithExt, newImagePath)
 					if err != nil {
 						return err
 					}
 				} else {
-					format := utils.ImageFormat(outputFormat)
-					quality := utils.ImageQuality(quality)
+					format := utils.ImageFormat(cc.OutputFormat)
+					quality := utils.ImageQuality(cc.Quality)
 					err = utils.ConvertImage(imagePathWithExt, newImagePath, format, quality)
 					if err != nil {
 						return err
 					}
 				}
 
-				relImagePath, err := filepath.Rel(filepath.Dir(newOutputPath), outputPathImg)
+				relImagePath, err := filepath.Rel(filepath.Dir(newOutputPath), cc.OutputPathImg)
 				if err != nil {
 					return err
 				}
@@ -127,15 +121,15 @@ func (c *Converter) ConvertObsidianToMarkdown() error {
 				ext := filepath.Ext(newImageName)
 				newImageNameWithoutExt := strings.TrimSuffix(newImageName, ext)
 
-				if outputFormat == "same" {
+				if cc.OutputFormat == "same" {
 					newImageNameWithNewExt = newImageName
 				} else {
-					newImageNameWithNewExt = newImageNameWithoutExt + "." + outputFormat
+					newImageNameWithNewExt = newImageNameWithoutExt + "." + cc.OutputFormat
 				}
 
 				outputImagePathMD := ""
-				if customImagePath != "" {
-					outputImagePathMD = filepath.Join(customImagePath, newImageNameWithNewExt)
+				if cc.CustomImagePath != "" {
+					outputImagePathMD = filepath.Join(cc.CustomImagePath, newImageNameWithNewExt)
 				} else {
 					outputImagePathMD = filepath.Join(relImagePath, newImageNameWithNewExt)
 				}
