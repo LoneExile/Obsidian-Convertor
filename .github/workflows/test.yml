@@ -1,13 +1,23 @@
 name: go-test
 
-on: [push]
+on:
+  push:
+    # tags:
+    #   - v*
+    branches:
+      - main
+      - master
+      - dev
+  pull_request:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         go-version: ['1.18', '1.19', '1.20.x']
+        os: [ubuntu-latest]
+    name: ${{ matrix.go-version }} ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Setup Go ${{ matrix.go-version }}
@@ -34,3 +44,8 @@ jobs:
 
       - name: Run tests
         run: go test -v ./...
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3.4.0
+        with:
+          version: v1.53.3
