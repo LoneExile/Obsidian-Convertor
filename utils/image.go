@@ -43,9 +43,7 @@ func CopyImage(srcPath, dstPath string) error {
 	}
 	defer srcImage.Close()
 
-	if _, err := io.Copy(dstImage, srcImage); err != nil {
-		return err
-	}
+	io.Copy(dstImage, srcImage)
 
 	return nil
 }
@@ -80,6 +78,14 @@ func ConvertImage(srcPath, dstPath string, format ImageFormat, quality ImageQual
 
 	if err != nil {
 		return err
+	}
+
+	dstInfo, err := os.Stat(dstPath)
+	if err != nil {
+		return err
+	}
+	if dstInfo.IsDir() {
+		return fmt.Errorf("dstPath is a directory: %s", dstPath)
 	}
 
 	// Remove the old extension from the image path

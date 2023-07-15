@@ -6,4 +6,5 @@ this directory for test
 
 ```go
 go test ./... -cover
+go test ./... -coverprofile=coverage.out
 ```

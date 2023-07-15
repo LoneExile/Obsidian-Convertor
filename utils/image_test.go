@@ -14,6 +14,9 @@ func TestCopyImage(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{name: "test1", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/test.jpg"}, wantErr: false},
+		{name: "test2", args: args{srcPath: "../example/SecondBrain/Assets/image/test_no_exists.jpg", dstPath: "../test/test.jpg"}, wantErr: true},
+		{name: "test3", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: ""}, wantErr: true},
+		// no way that `io.Copy` returns an error?
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -38,6 +41,12 @@ func TestConvertImage(t *testing.T) {
 	}{
 		// TODO: Add test cases.
 		{name: "test1", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/test.webp", format: FormatWEBP, quality: QualityMedium}, wantErr: false},
+		{name: "test2", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/test.webp", format: FormatJPG, quality: QualityLow}, wantErr: false},
+		{name: "test2", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/test.webp", format: FormatPNG, quality: QualityHigh}, wantErr: false},
+		{name: "test3", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/test.webp", format: FormatAVIF, quality: QualityMedium}, wantErr: false},
+		{name: "test4", args: args{srcPath: "../example/SecondBrain/Assets/image/test_no_exists.jpg", dstPath: "../test/test.webp", format: FormatSame, quality: QualityMedium}, wantErr: true},
+		{name: "test6", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "", format: FormatSame, quality: QualityMedium}, wantErr: true},
+		{name: "test7", args: args{srcPath: "../example/SecondBrain/Assets/image/test.jpg", dstPath: "../test/", format: FormatAVIF, quality: QualityMedium}, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
