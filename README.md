@@ -35,19 +35,12 @@ an issue or submit a pull request.
 
 You can install Obsidian-Convertor in two ways:
 
-### 1. Cloning the repository
+### 1. build from source
 
 ```bash
 git clone https://github.com/LoneExile/Obsidian-Convertor.git
 cd Obsidian-Convertor
-```
-
-The binary is already built in the repository, so you can run it with
-`./obsidian-convertor`
-
-or you can build it yourself
-
-```bash
+go mod download
 go build -o obsidian-convertor main.go
 ```
 
